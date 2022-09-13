@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/index.css" />
+    <title>Triqui</title>
+  </head>
+  <body>
+    <div>
+      <div>
+        <h3>Usuarios</h3>
+        <ul id="user-names"></ul>
+      </div>
+      <main id="chat" hidden>
+        <div>
+          <ul id="messages"></ul>
+        </div>
+        <form id="form-message">
+          <input
+            type="text"
+            id="user-message"
+            autocomplete="off"
+            placeholder="Escribe algo!"
+          />
+        </form>
+      </main>
+      <form id="form-name">
+        <input
+          type="text"
+          id="user-name"
+          autocomplete="off"
+          placeholder="Escribe tu apodo"
+        />
+      </form>
+    </div>
+
+    <div>
+        <h1>Triqui</h1>
+        <ul id="games-created"></ul>
+        <button id="create-game">Crear partida!</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
