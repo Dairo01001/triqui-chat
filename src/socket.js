@@ -2,17 +2,15 @@ const { Server } = require("socket.io");
 const Triqui = require("./triqui");
 
 const userNames = {};
-const userGames = {};
 
-const TYPE_NAME = 1;
-const HAS_GAME = 2;
+const triqui = new Triqui();
 
 const socket = (server) => {
   const io = new Server(server);
 
   io.on("connection", (socket) => {
     io.sockets.emit("userNames", Object.keys(userNames));
-    io.sockets.emit("newGame", Object.keys(userGames));
+    io.sockets.emit("clearBoard", triqui.board);
 
     // Chat
     socket.on("newUser", (userName, isCreated) => {
@@ -34,28 +32,26 @@ const socket = (server) => {
     // End Chat
 
     //Game
-
-    socket.on("newGame", (hasName) => {
-      if (!socket.userName) {
-        return hasName(TYPE_NAME);
+    socket.on("move", (index, info) => {
+      if (!userNames[socket.userName]) {
+        return info("No tienes un Apodo!");
       }
 
-      if(socket.userGame) {
-        return hasName(HAS_GAME);
+      if (triqui.makeMove(socket.userName[0], index)) {
+        if (triqui.isWinning(socket.userName[0])) {
+          triqui.clearBoard();
+          io.sockets.emit("winner", socket.userName);
+          io.sockets.emit("clearBoard", triqui.board);
+          return;
+        }
+        io.sockets.emit("move", { letter: socket.userName[0], index: index });
       }
-
-      const triqui = new Triqui();
-      socket.userGame = `${socket.userName}: ${triqui.code}`;
-      userGames[socket.userGame] = triqui;
-      io.sockets.emit("newGame", Object.keys(userGames));
     });
 
     socket.on("disconnect", () => {
       delete userNames[socket.userName];
-      delete userGames[socket.userGame];
 
       io.sockets.emit("userNames", Object.keys(userNames));
-      io.sockets.emit("newGame", Object.keys(userGames));
     });
   });
 };

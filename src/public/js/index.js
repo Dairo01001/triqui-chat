@@ -52,30 +52,28 @@ socket.on("userNames", (userNames) => {
 // End chat
 
 // Games
-
-const createGameElement = document.getElementById("create-game");
-const gamesCreatedElement = document.getElementById("games-created");
-
 const cellsElement = document.getElementsByClassName("cell");
 
-const hasName = (op) => {
-  if (op === TYPE_NAME) {
-    return alert("Primero ingresa un Apodo!");
-  }
-
-  if (op === HAS_GAME) {
-    return alert("Ya tienes una Partida Activa!");
-  }
+const info = (msg) => {
+  return alert(msg);
 };
 
-createGameElement.addEventListener("click", () => {
-  socket.emit("newGame", hasName);
+for (let i = 0; i < cellsElement.length; i++) {
+  cellsElement[i].addEventListener("click", () => {
+    socket.emit("move", i, info);
+  });
+}
+
+socket.on("move", ({ letter, index }) => {
+  cellsElement[index].textContent = letter;
 });
 
-socket.on("newGame", (userGames) => {
-  let userGamesList = "";
-  for (let i = 0; i < userGames.length; i++) {
-    userGamesList += `<li>${userGames[i]}</li>`;
+socket.on("winner", (winner) => {
+  alert(`${winner} con la letra ${winner[0]} ha ganado!`);
+})
+
+socket.on("clearBoard", (board) => {
+  for(let i = 0; i < cellsElement.length; i++) {
+    cellsElement[i].textContent = board[i];
   }
-  gamesCreatedElement.innerHTML = userGamesList;
-});
+})
