@@ -56,6 +56,8 @@ socket.on("userNames", (userNames) => {
 const createGameElement = document.getElementById("create-game");
 const gamesCreatedElement = document.getElementById("games-created");
 
+const cellsElement = document.getElementsByClassName("cell");
+
 const hasName = (op) => {
   if (op === TYPE_NAME) {
     return alert("Primero ingresa un Apodo!");
