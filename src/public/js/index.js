@@ -1,5 +1,15 @@
 const socket = io();
 
+const alertElement = document.getElementById("alert");
+
+const custonAlert = (msg) => {  
+  alertElement.textContent = msg;
+  alertElement.hidden = false;
+  setTimeout(() => {
+    alertElement.hidden = true;
+  }, 2000);
+}
+
 // Chat
 const formNameElement = document.getElementById("form-name");
 const userNameElement = document.getElementById("user-name");
@@ -11,14 +21,14 @@ const userMessageElement = document.getElementById("user-message");
 
 const isCreated = (flag) => {
   if (flag) {
-    return alert("El usuario ya Existe!");
+    return custonAlert("El usuario ya Existe!");
   }
   chatElement.hidden = false;
 };
 
 formNameElement.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (!userNameElement.value) return alert("Igresa tu nombre o apodo!");
+  if (!userNameElement.value) return custonAlert("Igresa tu nombre o apodo!");
   socket.emit("newUser", userNameElement.value, isCreated);
   userNameElement.value = "";
 });
@@ -53,7 +63,7 @@ const cellsElement = document.getElementsByClassName("cell");
 const letterElement = document.getElementById("letter");
 
 const info = (msg) => {
-  return alert(msg);
+  return custonAlert(msg);
 };
 
 for (let i = 0; i < cellsElement.length; i++) {
@@ -68,7 +78,7 @@ socket.on("move", ({ letter, index }) => {
 });
 
 socket.on("winner", ({winner, letter}) => {
-  alert(`${winner} con la letra ${letter} ha ganado!`);
+  custonAlert(`${winner} con la letra ${letter} ha ganado!`);
 })
 
 socket.on("clearBoard", (board) => {
