@@ -1,8 +1,5 @@
 const socket = io();
 
-const TYPE_NAME = 1;
-const HAS_GAME = 2;
-
 // Chat
 const formNameElement = document.getElementById("form-name");
 const userNameElement = document.getElementById("user-name");
@@ -53,6 +50,7 @@ socket.on("userNames", (userNames) => {
 
 // Games
 const cellsElement = document.getElementsByClassName("cell");
+const letterElement = document.getElementById("letter");
 
 const info = (msg) => {
   return alert(msg);
@@ -65,11 +63,12 @@ for (let i = 0; i < cellsElement.length; i++) {
 }
 
 socket.on("move", ({ letter, index }) => {
+  letterElement.textContent = letter;
   cellsElement[index].textContent = letter;
 });
 
-socket.on("winner", (winner) => {
-  alert(`${winner} con la letra ${winner[0]} ha ganado!`);
+socket.on("winner", ({winner, letter}) => {
+  alert(`${winner} con la letra ${letter} ha ganado!`);
 })
 
 socket.on("clearBoard", (board) => {

@@ -37,14 +37,25 @@ const socket = (server) => {
         return info("No tienes un Apodo!");
       }
 
-      if (triqui.makeMove(socket.userName[0], index)) {
-        if (triqui.isWinning(socket.userName[0])) {
+      if (triqui.makeMove(triqui.letter, index)) {
+        if (triqui.isWinning(triqui.letter)) {
           triqui.clearBoard();
-          io.sockets.emit("winner", socket.userName);
+          io.sockets.emit("winner", {
+            winner: socket.userName,
+            letter: triqui.letter,
+          });
           io.sockets.emit("clearBoard", triqui.board);
           return;
         }
-        io.sockets.emit("move", { letter: socket.userName[0], index: index });
+
+        if (triqui.isFullBoard()) {
+          triqui.clearBoard();
+          io.sockets.emit("clearBoard", triqui.board);
+          return;
+        }
+        
+        io.sockets.emit("move", { letter: triqui.letter, index: index });
+        triqui.swapLetter();
       }
     });
 

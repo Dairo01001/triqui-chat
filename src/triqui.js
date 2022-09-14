@@ -1,6 +1,7 @@
 class Triqui {
   constructor() {
     this.board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+    this.letter = "X";
     this.winningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -11,6 +12,14 @@ class Triqui {
       [0, 4, 8],
       [2, 4, 6],
     ];
+  }
+
+  swapLetter() {
+    if (this.letter === "X") {
+      return (this.letter = "O");
+    }
+
+    this.letter = "X";
   }
 
   makeMove(letter, index) {
@@ -39,10 +48,10 @@ class Triqui {
   }
 
   isFullBoard() {
-    for(let i = 0; i < this.board.length; i++) {
-        if(this.board[i] === " ") {
-            return false;
-        }
+    for (let i = 0; i < this.board.length; i++) {
+      if (this.board[i] === " ") {
+        return false;
+      }
     }
     return true;
   }
