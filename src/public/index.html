@@ -8,52 +8,55 @@
     <title>Triqui</title>
   </head>
   <body>
-    <div hidden id="alert" class="alert"></div>
-    <h1 id="letter"></h1>
-    <div>
-      <div>
-        <h3>Usuarios</h3>
-        <ul id="user-names"></ul>
-      </div>
-      <main id="chat" hidden>
-        <div>
+    <div class="container">
+      <div class="container-chat">
+        <main id="chat">
           <ul id="messages"></ul>
+
+          <form id="form-message">
+            <input
+              type="text"
+              id="user-message"
+              autocomplete="off"
+              placeholder="Escribe algo!"
+            />
+          </form>
+        </main>
+
+        <div class="user">
+          <h3>Usuarios</h3>
+          <ul id="user-names"></ul>
+          <form id="form-name">
+            <input
+              type="text"
+              id="user-name"
+              autocomplete="off"
+              placeholder="Escribe tu apodo"
+            />
+          </form>
         </div>
-        <form id="form-message">
-          <input
-            type="text"
-            id="user-message"
-            autocomplete="off"
-            placeholder="Escribe algo!"
-          />
-        </form>
-      </main>
-      <form id="form-name">
-        <input
-          type="text"
-          id="user-name"
-          autocomplete="off"
-          placeholder="Escribe tu apodo"
-        />
-      </form>
+      </div>
+
+      <div class="game-container">
+        <div>
+          <h1>Triqui</h1>
+        </div>
+        <div class="board">
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+        </div>
+        <h1 id="letter"></h1>
+      </div>
     </div>
 
-    <div>
-        <h1>Triqui</h1>
-    </div>
-
-    <div class="board">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-    </div>
-
+    <div hidden id="alert" class="alert"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/index.js"></script>
   </body>

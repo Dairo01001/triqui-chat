@@ -2,13 +2,17 @@ const socket = io();
 
 const alertElement = document.getElementById("alert");
 
-const custonAlert = (msg) => {  
+const user = {
+  apodo: "",
+};
+
+const custonAlert = (msg) => {
   alertElement.textContent = msg;
   alertElement.hidden = false;
   setTimeout(() => {
     alertElement.hidden = true;
   }, 2000);
-}
+};
 
 // Chat
 const formNameElement = document.getElementById("form-name");
@@ -29,14 +33,24 @@ const isCreated = (flag) => {
 formNameElement.addEventListener("submit", (e) => {
   e.preventDefault();
   if (!userNameElement.value) return custonAlert("Igresa tu nombre o apodo!");
+  if (user.apodo) {
+    userNameElement.value = "";
+    return custonAlert("Ya tienes un apodo!");
+  }
   socket.emit("newUser", userNameElement.value, isCreated);
+  user.apodo = userNameElement.value;
   userNameElement.value = "";
 });
 
 formMessageElement.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  if (!user.apodo) {
+    return custonAlert("Te falta un Apodo!");
+  }
+
   if (!userMessageElement.value) {
-    return alert("No has escrito nada!");
+    return custonAlert("No has escrito nada!");
   }
   socket.emit("newMessage", userMessageElement.value);
   userMessageElement.value = "";
@@ -77,12 +91,12 @@ socket.on("move", ({ letter, index }) => {
   cellsElement[index].textContent = letter;
 });
 
-socket.on("winner", ({winner, letter}) => {
+socket.on("winner", ({ winner, letter }) => {
   custonAlert(`${winner} con la letra ${letter} ha ganado!`);
-})
+});
 
 socket.on("clearBoard", (board) => {
-  for(let i = 0; i < cellsElement.length; i++) {
+  for (let i = 0; i < cellsElement.length; i++) {
     cellsElement[i].textContent = board[i];
   }
-})
+});
